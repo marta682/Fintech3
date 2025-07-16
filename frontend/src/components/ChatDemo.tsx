@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { apiService, formatApiError } from '../services/api';
-import type { LLMResponse } from '../services/api';
+import type { FraudDetectionResponse } from '../services/api';
 
 const ChatDemo: React.FC = () => {
   const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState<LLMResponse | null>(null);
+  const [response, setResponse] = useState<FraudDetectionResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,7 +17,7 @@ const ChatDemo: React.FC = () => {
     setResponse(null);
 
     try {
-      const result = await apiService.chatWithAnalysis(prompt);
+      const result = await apiService.detectFraud(prompt);
       setResponse(result);
     } catch (err) {
       setError(formatApiError(err));
@@ -35,18 +35,18 @@ const ChatDemo: React.FC = () => {
   return (
     <div className="chat-demo">
       <div className="chat-header">
-        <h2>LLM Chat Demo</h2>
-        <p>Test the TrustOS LLM integration</p>
+        <h2>Fraud Detection Demo</h2>
+        <p>Test the TrustOS fraud detection system</p>
       </div>
 
       <form onSubmit={handleSubmit} className="chat-form">
         <div className="form-group">
-          <label htmlFor="prompt">Enter your prompt:</label>
+          <label htmlFor="prompt">Enter a message to analyze:</label>
           <textarea
             id="prompt"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Ask about digital trust, security, or any topic..."
+            placeholder="Enter a SMS message or transaction details for fraud detection..."
             rows={4}
             disabled={loading}
           />
@@ -54,7 +54,7 @@ const ChatDemo: React.FC = () => {
 
         <div className="form-actions">
           <button type="submit" disabled={loading || !prompt.trim()}>
-            {loading ? 'Sending...' : 'Send'}
+            {loading ? 'Analyzing...' : 'Analyze'}
           </button>
           <button type="button" onClick={handleClear} disabled={loading}>
             Clear
@@ -71,43 +71,27 @@ const ChatDemo: React.FC = () => {
 
       {response && (
         <div className="response-container">
-          <div className="response-content">
-            <h3>Response</h3>
-            <div className="response-text">
-              {response.result}
+          <div className="fraud-result">
+            <h3>
+              <span className={`fraud-status ${response.flag ? 'fraudulent' : 'safe'}`}>
+                {response.flag ? '🚨 FRAUDULENT' : '✅ SAFE'}
+              </span>
+            </h3>
+            <div className="confidence-score">
+              <span className="label">Confidence Score:</span>
+              <span className="value">{(response.confidence * 100).toFixed(0)}%</span>
             </div>
           </div>
 
-          <div className="response-analysis">
-            <h4>Analysis</h4>
-            <div className="analysis-grid">
-              <div className="analysis-item">
-                <span className="label">Word Count:</span>
-                <span className="value">{response.analysis.word_count}</span>
-              </div>
-              <div className="analysis-item">
-                <span className="label">Sentiment:</span>
-                <span className={`value sentiment-${response.analysis.sentiment}`}>
-                  {response.analysis.sentiment}
-                </span>
-              </div>
-              <div className="analysis-item">
-                <span className="label">Confidence:</span>
-                <span className="value">{(response.analysis.confidence * 100).toFixed(1)}%</span>
-              </div>
-              <div className="analysis-item">
-                <span className="label">Topics:</span>
-                <span className="value">
-                  {response.analysis.topics.length > 0 
-                    ? response.analysis.topics.join(', ') 
-                    : 'None detected'}
-                </span>
-              </div>
+          <div className="analyzed-message">
+            <h4>Analyzed Message</h4>
+            <div className="message-content">
+              {response.message}
             </div>
           </div>
 
           <div className="response-metadata">
-            <h4>Metadata</h4>
+            <h4>Analysis Details</h4>
             <div className="metadata-grid">
               <div className="metadata-item">
                 <span className="label">Model:</span>
@@ -118,11 +102,7 @@ const ChatDemo: React.FC = () => {
                 <span className="value">{response.metadata.tokens_used}</span>
               </div>
               <div className="metadata-item">
-                <span className="label">Finish Reason:</span>
-                <span className="value">{response.metadata.finish_reason}</span>
-              </div>
-              <div className="metadata-item">
-                <span className="label">Timestamp:</span>
+                <span className="label">Analysis Time:</span>
                 <span className="value">
                   {new Date(response.metadata.timestamp).toLocaleString()}
                 </span>

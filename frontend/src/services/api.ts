@@ -9,6 +9,27 @@ export interface LLMRequest {
   max_tokens?: number;
 }
 
+export interface FraudDetectionRequest {
+  message: string;
+  model?: string;
+  temperature?: number;
+  max_tokens?: number;
+}
+
+export interface FraudDetectionResponse {
+  success: boolean;
+  flag: boolean;
+  confidence: number;
+  analysis: string;
+  message: string;
+  metadata: {
+    model: string;
+    tokens_used: number;
+    finish_reason: string;
+    timestamp: string;
+  };
+}
+
 export interface LLMResponse {
   success: boolean;
   result: string;
@@ -89,6 +110,33 @@ export class ApiService {
   // Convenience method for analyzed chat
   async chatWithAnalysis(prompt: string): Promise<LLMResponse> {
     return await this.sendLLMRequest({ prompt });
+  }
+
+  // Fraud detection method
+  async detectFraud(message: string): Promise<FraudDetectionResponse> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/fraud-detection`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const error = data as ApiError;
+        throw new Error(error.message || `API request failed: ${response.status}`);
+      }
+
+      return data as FraudDetectionResponse;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error('Failed to detect fraud');
+    }
   }
 }
 

@@ -1789,6 +1789,76 @@ body::before {
   color: var(--text-secondary) !important;
 }
 
+/* Fraud Detection Styles */
+.fraud-result {
+  text-align: center;
+  padding: 2rem;
+  background: var(--bg-primary);
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.fraud-status {
+  font-size: 2rem;
+  font-weight: 800;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.fraud-status.fraudulent {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.fraud-status.safe {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.confidence-score {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.analyzed-message {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-md);
+}
+
+.analyzed-message h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.message-content {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 /* Responsive adjustments for chat demo */
 @media (max-width: 768px) {
   .chat-demo {
@@ -1814,5 +1884,20 @@ body::before {
   
   .response-container {
     padding: 1.5rem;
+  }
+  
+  .fraud-result {
+    padding: 1.5rem;
+  }
+  
+  .fraud-status {
+    font-size: 1.5rem;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .confidence-score {
+    font-size: 1.1rem;
+    flex-direction: column;
+    gap: 0.5rem;
   }
 } 

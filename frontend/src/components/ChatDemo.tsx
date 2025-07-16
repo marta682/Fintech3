@@ -90,6 +90,15 @@ const ChatDemo: React.FC = () => {
             </div>
           </div>
 
+          {response.fraud_content && (
+            <div className="fraudulent-message">
+              <h4>🚨 Fraudulent Message Detected</h4>
+              <div className="fraud-message-content">
+                {response.fraud_content}
+              </div>
+            </div>
+          )}
+
           <div className="response-metadata">
             <h4>Analysis Details</h4>
             <div className="metadata-grid">

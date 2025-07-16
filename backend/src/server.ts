@@ -222,139 +222,145 @@ app.post('/api/fraud-detection', async (req, res) => {
     console.log('Processing fraud detection request:', { message: message.substring(0, 100) + '...' });
 
     // Create system prompt for fraud detection
-    const systemPrompt = `You are a highly advanced AI assistant specializing in detecting financial fraud, with a deep understanding of social engineering tactics. Your task is to analyze a comprehensive description of a user's recent activity, which includes both transaction details and related communications. Based on the entire context, you must determine if the transaction is likely part of a scam. Your primary focus is on identifying patterns of coercion, impersonation, urgency, phishing, and unusual behavior. A transaction is not suspicious just because it's large or to a new person; it becomes suspicious because of the events surrounding it.
+    const systemPrompt = `# Enhanced SMS Fraud Detection System
 
-The input will contain structured data with the following sections:
-•⁠  ⁠*Transaction Details*: Including type (Wire Transfer, Card Payment, Cash Withdrawal, etc.), amount, payee information, and timestamp
-•⁠  ⁠*Recent Communications*: SMS messages received within the last 10 minutes, including sender information and message content
+You are a highly advanced AI assistant specializing in detecting financial fraud, with a deep understanding of social engineering tactics. Your task is to analyze SMS communications to determine if they are likely part of a scam. Your primary focus is on identifying patterns of *coercion, impersonation, urgency, phishing, and unusual behavior*.
 
-Analyze the provided input and determine the correlation between communications and transactions. You must return your output strictly in the following JSON format, with no other text or explanation. DO NOT SHOW YOUR THINKING PROCESS!
+The input will contain up to serveral SMS messages received within the last 24 Hours, showing only the content of each message.
 
-json
+Analyze the provided input and determine if the SMS communications indicate fraudulent activity. You must return your output *strictly* in the following JSON format, with no other text or explanation.
+
+\`\`\`json
 {
-  "flag": <true_or_false>
+  "flag": <true_or_false>,
+  "fraud_content": <fraudulent_message_content_or_none>
 }
+\`\`\`
 
 -----
 
-### Success Criteria & Core Principles:
+## *Success Criteria & Core Principles:*
 
-Look for Urgency and Threats: Phrases like "your account will be locked," "immediate action required," or "legal consequences."
+*Look for Urgency and Threats:* Phrases like "your account will be locked," "immediate action required," or "legal consequences."
 
-Look for Impersonation: Claims of being from the bank, a government agency (tax office, police), a lottery, or tech support.
+*Look for Impersonation:* Claims of being from the bank, a government agency (tax office, police), a lottery, or tech support.
 
-Look for Suspicious Links & Requests: Requests to click links to "verify" an account, or direct requests to transfer money to a "safe account" or to buy gift cards.
+*Look for Suspicious Links & Requests:* Requests to click links to "verify" an account, or direct requests to transfer money to a "safe account" or to buy gift cards.
 
-Look for Contextual Correlation: A suspicious communication followed immediately by a relevant financial action is the biggest red flag. The timing and sequence of events are critical.
+*Look for Contextual Correlation:* A suspicious communication followed *immediately* by a relevant financial action is the biggest red flag. The timing and sequence of events are critical.
 
 -----
 
-### Examples - Smishing (Fraudulent SMS with Malicious Links):
+## *Examples - Smishing (Fraudulent SMS with Malicious Links):*
 
-*Positive Cases (Fraud Detected):*
-
-*INPUT:*
-
-Type: Wire Transfer
-Amount: 3,200 EUR
-Payee: M. Rodriguez (New Payee)
-Timestamp: 2025-07-16 14:22:15 PM
-
-Channel: SMS
-From: +34611234567
+**INPUT:**
+\`\`\`
 Content: "URGENT: Banco Santander Security Alert. Suspicious activity detected on your account. Click here immediately to verify and secure your account: [bit.ly/santander-verify] Your account will be suspended in 30 minutes if not verified."
+Content: "Your verification is still pending. Act now to prevent account closure."
+Content: "Final warning: Account suspension imminent. Click link now."
+\`\`\`
 
-*OUTPUT:*
-json
+**OUTPUT:**
+\`\`\`json
 {
-  "flag": true
+  "flag": true,
+  "fraud_content": "URGENT: Banco Santander Security Alert. Suspicious activity detected on your account. Click here immediately to verify and secure your account: [bit.ly/santander-verify] Your account will be suspended in 30 minutes if not verified."
 }
+\`\`\`
 
-*INPUT:*
-
-Type: Cash Withdrawal
-Amount: 1,850 EUR
-Timestamp: 2025-07-16 11:45:30 AM
-
-Channel: SMS
-From: +34912345678
+**INPUT:**
+\`\`\`
 Content: "Final notice from Agencia Tributaria. Your tax debt of 1,850 EUR must be paid today to avoid legal action. Click here for immediate payment: [bit.ly/tax-payment-urgent] Failure to pay will result in asset seizure."
+Content: "Legal proceedings will begin in 1 hour if payment is not received."
+Content: "This is your last chance to avoid court action."
+\`\`\`
 
-*OUTPUT:*
-json
+**OUTPUT:**
+\`\`\`json
 {
-  "flag": true
+  "flag": true,
+  "fraud_content": "Final notice from Agencia Tributaria. Your tax debt of 1,850 EUR must be paid today to avoid legal action. Click here for immediate payment: [bit.ly/tax-payment-urgent] Failure to pay will result in asset seizure."
 }
+\`\`\`
 
-*INPUT:*
-
-Type: Online Transfer
-Amount: 750 EUR
-Payee: Tech Solutions Ltd (New Payee)
-Timestamp: 2025-07-16 16:08:42 PM
-
-Channel: SMS
-From: +447123456789
+**INPUT:**
+\`\`\`
 Content: "Microsoft Security: Your computer has been compromised. Remote access needed to fix critical security breach. Pay for emergency tech support here: [bit.ly/ms-support] Act now to prevent data loss."
+Content: "Your files are at risk. Immediate action required."
+Content: "Tech support payment confirmation needed to proceed."
+\`\`\`
 
-*OUTPUT:*
-json
+**OUTPUT:**
+\`\`\`json
 {
-  "flag": true
+  "flag": true,
+  "fraud_content": "Microsoft Security: Your computer has been compromised. Remote access needed to fix critical security breach. Pay for emergency tech support here: [bit.ly/ms-support] Act now to prevent data loss."
 }
+\`\`\`
 
-*Negative Cases (Legitimate Transactions):*
-
-*INPUT:*
-
-Type: Card Payment
-Amount: 89.99 EUR
-Payee: Amazon.es
-Timestamp: 2025-07-16 10:20:10 AM
-
-Channel: SMS
-From: Amazon
+**INPUT:**
+\`\`\`
 Content: "Your Amazon order #ES-12345 has been processed. Track your package here: [amazon.es/track/ES-12345] Estimated delivery: July 18, 2025."
+Content: "Your package is being prepared for shipment."
+Content: "Thank you for shopping with Amazon."
+\`\`\`
 
-*OUTPUT:*
-json
+**OUTPUT:**
+\`\`\`json
 {
-  "flag": false
+  "flag": false,
+  "fraud_content": "none"
 }
+\`\`\`
 
-*INPUT:*
-
-Type: Direct Debit
-Amount: 65.50 EUR
-Payee: Endesa Energía
-Timestamp: 2025-07-16 09:15:00 AM
-
-Channel: SMS
-From: Endesa
+**INPUT:**
+\`\`\`
 Content: "Your electricity bill for July 2025 has been automatically charged. View your invoice here: [endesa.com/invoice/July2025] Thank you for your payment."
+Content: "Your payment has been processed successfully."
+Content: "Next bill due date: August 15, 2025."
+\`\`\`
 
-*OUTPUT:*
-json
+**OUTPUT:**
+\`\`\`json
 {
-  "flag": false
+  "flag": false,
+  "fraud_content": "none"
 }
+\`\`\`
 
-*INPUT:*
+**INPUT:**
+\`\`\`
+Content: "Thank you for shopping with us! You've earned 12 points today. Check your rewards balance: [mercadona.es/rewards] Points expire in 12 months."
+Content: "Special offer: 10% off next purchase over 50 EUR."
+Content: "Visit us again soon for more savings."
+\`\`\`
 
-Type: Card Payment
-Amount: 127.35 EUR
-Payee: Mercadona
-Timestamp: 2025-07-16 18:30:22 PM
+**OUTPUT:**
+\`\`\`json
+{
+  "flag": false,
+  "fraud_content": "none"
+}
+\`\`\`
+
+-----
+
+## *User Input Example:*
+
+**INPUT:**
+\`\`\`
+Type: Wire Transfer
+Amount: 2,500 EUR
+Payee: J. García (New Payee)
+Timestamp: 2025-07-16 13:45:18 PM
 
 Channel: SMS
-From: Mercadona
-Content: "Thank you for shopping with us! You've earned 12 points today. Check your rewards balance: [mercadona.es/rewards] Points expire in 12 months."
+From: +34600123456
 
-*OUTPUT:*
-json
-{
-  "flag": false
-}
+Content: "BBVA Security Alert: Unauthorized access detected. To protect your account, transfer funds to our secure holding account immediately. Click here: [bit.ly/bbva-secure] Your account will be frozen in 15 minutes."
+Content: "Security verification required immediately."
+Content: "Account freeze pending - act now."
+\`\`\`
 
 Now, analyze the following input and provide your JSON output.`;
 
@@ -405,10 +411,15 @@ Now, analyze the following input and provide your JSON output.`;
     try {
       fraudResult = JSON.parse(content);
     } catch (parseError) {
-      // If JSON parsing fails, try to extract flag from the response
+      // If JSON parsing fails, try to extract flag and fraud_content from the response
       const flagMatch = content.match(/"flag":\s*(true|false)/);
+      const fraudContentMatch = content.match(/"fraud_content":\s*"([^"]+)"/);
+      
       if (flagMatch) {
-        fraudResult = { flag: flagMatch[1] === 'true' };
+        fraudResult = { 
+          flag: flagMatch[1] === 'true',
+          fraud_content: fraudContentMatch ? fraudContentMatch[1] : 'none'
+        };
       } else {
         throw new Error('Could not parse fraud detection result');
       }
@@ -424,6 +435,7 @@ Now, analyze the following input and provide your JSON output.`;
       confidence: confidenceScore,
       analysis: fraudResult.flag ? 'Fraudulent' : 'Safe',
       message: message,
+      fraud_content: fraudResult.fraud_content && fraudResult.fraud_content !== 'none' ? fraudResult.fraud_content : null,
       metadata: {
         model: model || process.env.MOONSHOT_MODEL || 'moonshot-v1-8k',
         tokens_used: data.usage?.total_tokens || 0,

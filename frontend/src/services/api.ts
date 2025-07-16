@@ -22,6 +22,7 @@ export interface FraudDetectionResponse {
   confidence: number;
   analysis: string;
   message: string;
+  fraud_content: string | null;
   metadata: {
     model: string;
     tokens_used: number;

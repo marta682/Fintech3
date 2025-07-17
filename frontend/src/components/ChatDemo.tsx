@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { apiService, formatApiError } from '../services/api';
 import type { FraudDetectionResponse } from '../services/api';
 
-const ChatDemo: React.FC = () => {
+const ChatDemo = () => {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState<FraudDetectionResponse | null>(null);
   const [loading, setLoading] = useState(false);

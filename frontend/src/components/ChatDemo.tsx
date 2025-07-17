@@ -14,14 +14,16 @@ From: +12345678910
 Content: “Hi dad, i’m alright”
 From: +34655789012
 Content: “Don’t forget dinner at 8 tonight!”
+
+
 From: +34611234567
 Content: “NOTICE: Unusual login detected on your CaixaBank account. To avoid suspension, confirm your identity now at: [bit.ly/caixabank-secure]. Action required within 15 minutes.”
+
+
 From: +34698765432
 Content: “Thanks for sending the report. Will review it tomorrow.”
-
 From: +34622334455
 Content: “Meeting confirmed for Thursday at 11.”
-
 From: +34688997766
 Content: “Your electricity bill of €54.30 has been paid. Thank you!”
 From: +34633445566

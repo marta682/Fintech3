@@ -137,11 +137,37 @@ const Home = () => {
         <div className="mv-grid">
           <div className="mv-card">
             <h2>Our Mission</h2>
-            <p>To create a more secure and trustworthy digital ecosystem by providing innovative solutions that empower organizations to operate with confidence and integrity in an increasingly connected world.</p>
+            <p>Empower banks to protect vulnerable customers from manipulation and exploitation with smarter, proactive fraud defence that builds trust.</p>
           </div>
           <div className="mv-card">
             <h2>Our Vision</h2>
-            <p>To become the global standard for digital trust and security, enabling a future where organizations can focus on growth and innovation while we handle their security infrastructure needs.</p>
+            <p>Enable banks to see beyond transactions, detect psychological scams across channels while maintaining a frictionless customer experience.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="value-proposition">
+        <div className="value-content">
+          <div className="value-header">
+            <h2>Beyond Traditional Fraud Detection</h2>
+            <p>Revolutionizing financial security with AI-powered psychological scam detection</p>
+          </div>
+          <div className="value-grid">
+            <div className="value-card">
+              <div className="value-icon">🛡️</div>
+              <h3>Advanced Detection</h3>
+              <p>APP fraud, social engineering, and impersonation scams detected in real-time</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon">🔄</div>
+              <h3>Multi-Channel Orchestration</h3>
+              <p>Seamless protection across all customer touchpoints and communication channels</p>
+            </div>
+            <div className="value-card">
+              <div className="value-icon">💰</div>
+              <h3>40%+ Cost Reduction</h3>
+              <p>Significant fraud cost reduction through proactive prevention and early intervention</p>
+            </div>
           </div>
         </div>
       </section>

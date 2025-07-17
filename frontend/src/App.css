@@ -751,6 +751,17 @@ body::before {
   box-shadow: var(--shadow-2xl);
 }
 
+.mv-icon {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .mv-card h2 {
   font-size: 2.25rem;
   font-weight: 800;

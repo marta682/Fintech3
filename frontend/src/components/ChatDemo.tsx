@@ -3,7 +3,56 @@ import { apiService, formatApiError } from '../services/api';
 import type { FraudDetectionResponse } from '../services/api';
 
 const ChatDemo = () => {
-  const [prompt, setPrompt] = useState('');
+  const defaultExampleText = `Type: Wire Transfer
+Amount: 3,200 EUR
+Payee: M. Rodriguez
+Timestamp: 2025-07-16 14:22:15 PM
+
+From: +34631234560
+Content: “Hi mom, i’m alright”
+From: +12345678910
+Content: “Hi dad, i’m alright”
+From: +34655789012
+Content: “Don’t forget dinner at 8 tonight!”
+From: +34611234567
+Content: “NOTICE: Unusual login detected on your CaixaBank account. To avoid suspension, confirm your identity now at: [bit.ly/caixabank-secure]. Action required within 15 minutes.”
+From: +34698765432
+Content: “Thanks for sending the report. Will review it tomorrow.”
+
+From: +34622334455
+Content: “Meeting confirmed for Thursday at 11.”
+
+From: +34688997766
+Content: “Your electricity bill of €54.30 has been paid. Thank you!”
+From: +34633445566
+Content: “Good luck on your presentation today!”
+From: +34644556677
+Content: “Hey, we’re still on for the weekend, right?”
+From: +34655667788
+Content: “We have received your package request. Delivery expected Friday.”
+From: +34666778899
+Content: “Happy birthday! Hope you have a great day!”
+From: +34677889900
+Content: “Here is your one-time code: 294031”
+From: +34688990011
+Content: “Your monthly subscription fee of €9.99 has been charged successfully.”
+From: +34699001122
+Content: “See you at the football game later!”
+From: +34610111213
+Content: “Mom’s appointment is at 3 pm today.”
+From: +34621222324
+Content: “Flight confirmed: MAD–LIS, departs Friday at 10:20.”
+From: +34632333435
+Content: “Don’t forget to bring the documents tomorrow.”
+From: +34643444546
+Content: “Your Uber is arriving in 2 minutes.”
+From: +34654555657
+Content: “Class is cancelled today, see you Monday.”
+From: +34665666768
+Content: “Thanks for the coffee today!”
+`;
+
+  const [prompt, setPrompt] = useState(defaultExampleText);
   const [response, setResponse] = useState<FraudDetectionResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,38 +88,14 @@ const ChatDemo = () => {
         <p>Test the TrustOS fraud detection system</p>
       </div>
 
-      <div className="input-format-suggestion">
-        <h3>📋 Input Format Example</h3>
-        <div className="format-example">
-          <div className="example-header">*INPUT:*</div>
-          <div className="example-content">
-            <div className="example-line">Type: Wire Transfer</div>
-            <div className="example-line">Amount: 3,200 EUR</div>
-            <div className="example-line">Payee: M. Rodriguez</div>
-            <div className="example-line">Timestamp: 2025-07-16 14:22:15 PM</div>
-            <div className="example-line">From: +34631234560</div>
-            <div className="example-line">Content: "Hi mom, i'm alright"</div>
-            <div className="example-line">From: +12345678910</div>
-            <div className="example-line">Content: "Hi dad, i'm alright"</div>
-            <div className="example-line">From: +34655789012</div>
-            <div className="example-line">Content: "Don't forget dinner at 8 tonight!"</div>
-            <div className="example-line fraud-example">From: +34611234567</div>
-            <div className="example-line fraud-example">Content: "NOTICE: Unusual login detected on your CaixaBank account. To avoid suspension, confirm your identity now at: [bit.ly/caixabank-secure]. Action required within 15 minutes."</div>
-            <div className="example-line">From: +34698765432</div>
-            <div className="example-line">Content: "Thanks for sending the report. Will review it tomorrow."</div>
-            <div className="example-dots">...</div>
-          </div>
-        </div>
-      </div>
-
       <form onSubmit={handleSubmit} className="chat-form">
         <div className="form-group">
-          <label htmlFor="prompt">Enter a message to analyze:</label>
+          <label htmlFor="prompt">Enter one case scenario to analyze:</label>
           <textarea
             id="prompt"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Enter a SMS message or transaction details for fraud detection..."
+            placeholder="Enter one or more SMS messages or transaction details for fraud detection..."
             rows={4}
             disabled={loading}
           />

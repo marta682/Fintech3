@@ -84,10 +84,12 @@ const Home = () => {
       <section className="mission-vision">
         <div className="mv-grid">
           <div className="mv-card">
+            <div className="mv-icon">🎯</div>
             <h2>Our Mission</h2>
             <p>Empower banks to protect vulnerable customers from manipulation and exploitation with smarter, proactive fraud defence that builds trust.</p>
           </div>
           <div className="mv-card">
+            <div className="mv-icon">👁️</div>
             <h2>Our Vision</h2>
             <p>Enable banks to see beyond transactions, detect psychological scams across channels while maintaining a frictionless customer experience.</p>
           </div>

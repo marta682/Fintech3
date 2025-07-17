@@ -20,6 +20,7 @@ export interface FraudDetectionResponse {
   success: boolean;
   flag: boolean;
   confidence: number;
+  risk_score: number;
   analysis: string;
   message: string;
   fraud_content: string | null;

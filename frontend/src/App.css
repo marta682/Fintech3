@@ -751,6 +751,18 @@ body::before {
   width: 100%;
 }
 
+.demo-content-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 70vh;
+  padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 .demo-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1566,6 +1578,7 @@ body::before {
 
 /* Chat Demo Styles */
 .chat-demo {
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
@@ -1586,6 +1599,67 @@ body::before {
 .chat-header p {
   color: var(--text-secondary);
   font-size: 1.125rem;
+}
+
+.input-format-suggestion {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.input-format-suggestion h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.format-example {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.example-header {
+  font-weight: 700;
+  color: var(--accent-primary);
+  margin-bottom: 1rem;
+}
+
+.example-content {
+  color: var(--text-primary);
+}
+
+.example-line {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.example-line.fraud-example {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2);
+  color: #dc2626;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid #ef4444;
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+.example-dots {
+  color: var(--text-muted);
+  font-style: italic;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .chat-form {
@@ -1894,8 +1968,33 @@ body::before {
 
 /* Responsive adjustments for chat demo */
 @media (max-width: 768px) {
+  .demo-content-centered {
+    padding: 1rem;
+    min-height: 60vh;
+    width: 100%;
+  }
+
   .chat-demo {
     padding: 1rem;
+  }
+
+  .input-format-suggestion {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .input-format-suggestion h3 {
+    font-size: 1.1rem;
+  }
+
+  .format-example {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .example-line.fraud-example {
+    padding: 0.75rem;
+    font-size: 0.85rem;
   }
   
   .chat-form {

@@ -39,6 +39,30 @@ const ChatDemo: React.FC = () => {
         <p>Test the TrustOS fraud detection system</p>
       </div>
 
+      <div className="input-format-suggestion">
+        <h3>📋 Input Format Example</h3>
+        <div className="format-example">
+          <div className="example-header">*INPUT:*</div>
+          <div className="example-content">
+            <div className="example-line">Type: Wire Transfer</div>
+            <div className="example-line">Amount: 3,200 EUR</div>
+            <div className="example-line">Payee: M. Rodriguez</div>
+            <div className="example-line">Timestamp: 2025-07-16 14:22:15 PM</div>
+            <div className="example-line">From: +34631234560</div>
+            <div className="example-line">Content: "Hi mom, i'm alright"</div>
+            <div className="example-line">From: +12345678910</div>
+            <div className="example-line">Content: "Hi dad, i'm alright"</div>
+            <div className="example-line">From: +34655789012</div>
+            <div className="example-line">Content: "Don't forget dinner at 8 tonight!"</div>
+            <div className="example-line fraud-example">From: +34611234567</div>
+            <div className="example-line fraud-example">Content: "NOTICE: Unusual login detected on your CaixaBank account. To avoid suspension, confirm your identity now at: [bit.ly/caixabank-secure]. Action required within 15 minutes."</div>
+            <div className="example-line">From: +34698765432</div>
+            <div className="example-line">Content: "Thanks for sending the report. Will review it tomorrow."</div>
+            <div className="example-dots">...</div>
+          </div>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} className="chat-form">
         <div className="form-group">
           <label htmlFor="prompt">Enter a message to analyze:</label>
@@ -78,8 +102,8 @@ const ChatDemo: React.FC = () => {
               </span>
             </h3>
             <div className="confidence-score">
-              <span className="label">Confidence Score:</span>
-              <span className="value">{(response.confidence * 100).toFixed(0)}%</span>
+              <span className="label">Risk Score:</span>
+              <span className="value">{response.risk_score}/100</span>
             </div>
           </div>
 

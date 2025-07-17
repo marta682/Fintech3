@@ -233,7 +233,8 @@ Analyze the provided input and determine if the SMS communications indicate frau
 \`\`\`json
 {
   "flag": <true_or_false>,
-  "fraud_content": <fraudulent_message_content_or_none>
+  "fraud_content": <fraudulent_message_content_or_none>,
+  "risk_score": <integer_from_0_to_100>
 }
 \`\`\`
 
@@ -264,7 +265,8 @@ Content: "Final warning: Account suspension imminent. Click link now."
 \`\`\`json
 {
   "flag": true,
-  "fraud_content": "URGENT: Banco Santander Security Alert. Suspicious activity detected on your account. Click here immediately to verify and secure your account: [bit.ly/santander-verify] Your account will be suspended in 30 minutes if not verified."
+  "fraud_content": "URGENT: Banco Santander Security Alert. Suspicious activity detected on your account. Click here immediately to verify and secure your account: [bit.ly/santander-verify] Your account will be suspended in 30 minutes if not verified.",
+  "risk_score": 95
 }
 \`\`\`
 
@@ -279,7 +281,8 @@ Content: "This is your last chance to avoid court action."
 \`\`\`json
 {
   "flag": true,
-  "fraud_content": "Final notice from Agencia Tributaria. Your tax debt of 1,850 EUR must be paid today to avoid legal action. Click here for immediate payment: [bit.ly/tax-payment-urgent] Failure to pay will result in asset seizure."
+  "fraud_content": "Final notice from Agencia Tributaria. Your tax debt of 1,850 EUR must be paid today to avoid legal action. Click here for immediate payment: [bit.ly/tax-payment-urgent] Failure to pay will result in asset seizure.",
+  "risk_score": 92
 }
 \`\`\`
 
@@ -294,7 +297,8 @@ Content: "Tech support payment confirmation needed to proceed."
 \`\`\`json
 {
   "flag": true,
-  "fraud_content": "Microsoft Security: Your computer has been compromised. Remote access needed to fix critical security breach. Pay for emergency tech support here: [bit.ly/ms-support] Act now to prevent data loss."
+  "fraud_content": "Microsoft Security: Your computer has been compromised. Remote access needed to fix critical security breach. Pay for emergency tech support here: [bit.ly/ms-support] Act now to prevent data loss.",
+  "risk_score": 88
 }
 \`\`\`
 
@@ -309,7 +313,8 @@ Content: "Thank you for shopping with Amazon."
 \`\`\`json
 {
   "flag": false,
-  "fraud_content": "none"
+  "fraud_content": "none",
+  "risk_score": 5
 }
 \`\`\`
 
@@ -324,7 +329,8 @@ Content: "Next bill due date: August 15, 2025."
 \`\`\`json
 {
   "flag": false,
-  "fraud_content": "none"
+  "fraud_content": "none",
+  "risk_score": 2
 }
 \`\`\`
 
@@ -339,7 +345,8 @@ Content: "Visit us again soon for more savings."
 \`\`\`json
 {
   "flag": false,
-  "fraud_content": "none"
+  "fraud_content": "none",
+  "risk_score": 8
 }
 \`\`\`
 
@@ -411,28 +418,32 @@ Now, analyze the following input and provide your JSON output.`;
     try {
       fraudResult = JSON.parse(content);
     } catch (parseError) {
-      // If JSON parsing fails, try to extract flag and fraud_content from the response
+      // If JSON parsing fails, try to extract flag, fraud_content, and risk_score from the response
       const flagMatch = content.match(/"flag":\s*(true|false)/);
       const fraudContentMatch = content.match(/"fraud_content":\s*"([^"]+)"/);
+      const riskScoreMatch = content.match(/"risk_score":\s*(\d+)/);
       
       if (flagMatch) {
         fraudResult = { 
           flag: flagMatch[1] === 'true',
-          fraud_content: fraudContentMatch ? fraudContentMatch[1] : 'none'
+          fraud_content: fraudContentMatch ? fraudContentMatch[1] : 'none',
+          risk_score: riskScoreMatch ? parseInt(riskScoreMatch[1]) : 50
         };
       } else {
         throw new Error('Could not parse fraud detection result');
       }
     }
 
-    // Calculate confidence score (simple heuristic based on message characteristics)
-    const confidenceScore = calculateFraudConfidence(message, fraudResult.flag);
+    // Use risk_score from LLM response, fallback to calculated confidence if not available
+    const riskScore = fraudResult.risk_score || calculateFraudConfidence(message, fraudResult.flag) * 100;
+    const confidenceScore = riskScore / 100; // Convert to 0-1 scale for backward compatibility
 
     // Return structured response
     res.json({ 
       success: true,
       flag: fraudResult.flag,
       confidence: confidenceScore,
+      risk_score: riskScore,
       analysis: fraudResult.flag ? 'Fraudulent' : 'Safe',
       message: message,
       fraud_content: fraudResult.fraud_content && fraudResult.fraud_content !== 'none' ? fraudResult.fraud_content : null,

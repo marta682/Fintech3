@@ -759,7 +759,7 @@ body::before {
   min-height: 70vh;
   padding: 2rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -935,6 +935,10 @@ body::before {
   padding-top: 80px;
   min-height: 100vh;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .contact-tabs {
@@ -978,7 +982,7 @@ body::before {
 .contact-content {
   display: grid;
   gap: 5rem;
-  max-width: 1400px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 2rem;
 }
@@ -1373,8 +1377,8 @@ body::before {
   
   .page-header {
     padding: 3rem 1rem 2rem;
-  }
-  
+  } 
+
   .demo-container {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -2045,4 +2049,15 @@ body::before {
     padding: 1rem;
     font-size: 0.9rem;
   }
+} 
+
+.main-content {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
 } 

@@ -679,6 +679,30 @@ body::before {
   letter-spacing: 0.5px;
 }
 
+/* Workflow Diagram Styles */
+.workflow-diagram {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 4rem auto;
+  max-width: 1200px;
+  padding: 2rem;
+}
+
+.flow-diagram {
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-xl);
+  transition: all 0.3s ease;
+}
+
+.flow-diagram:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-2xl);
+}
+
 /* Mission & Vision - Enhanced */
 .mission-vision {
   padding: 8rem 2rem;
@@ -1469,10 +1493,24 @@ body::before {
     gap: 1.5rem;
   }
   
-  .workflow-feature {
+    .workflow-feature {
     padding: 2rem;
   }
-  
+
+  .workflow-diagram {
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+
+  .flow-diagram {
+    border-radius: 0.5rem;
+    max-width: 100%;
+  }
+
+  .flow-diagram:hover {
+    transform: scale(1.01);
+  }
+
   .feature-stat {
     font-size: 2rem;
   }

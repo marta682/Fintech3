@@ -70,66 +70,16 @@ const Home = () => {
 
       <section className="how-it-works">
         <div className="section-header">
-          <h2>How does TrustOS work?</h2>
-          <p>A simple, powerful approach to enterprise security</p>
+          <h2>Our Innovative Approach</h2>
+          <p>Your invisible shield against digital fraud</p>
         </div>
         
-        <div className="workflow-container">
-          <div className="workflow-step">
-            <div className="step-number">1</div>
-            <div className="step-content">
-              <div className="step-icon">🔗</div>
-              <h3>Connect</h3>
-              <p>Integrate TrustOS with your existing systems using our comprehensive APIs and SDKs. Setup takes minutes, not hours.</p>
-            </div>
-          </div>
-          
-          <div className="workflow-arrow">
-            <div className="arrow-line"></div>
-            <div className="arrow-head"></div>
-          </div>
-          
-          <div className="workflow-step">
-            <div className="step-number">2</div>
-            <div className="step-content">
-              <div className="step-icon">🔍</div>
-              <h3>Monitor</h3>
-              <p>Our AI-powered system continuously monitors your digital infrastructure, detecting threats and anomalies in real-time.</p>
-            </div>
-          </div>
-          
-          <div className="workflow-arrow">
-            <div className="arrow-line"></div>
-            <div className="arrow-head"></div>
-          </div>
-          
-          <div className="workflow-step">
-            <div className="step-number">3</div>
-            <div className="step-content">
-              <div className="step-icon">🛡️</div>
-              <h3>Protect</h3>
-              <p>Automated response systems neutralize threats instantly while providing detailed analytics and compliance reporting.</p>
-            </div>
-          </div>
-        </div>
-        
-        <div className="workflow-features">
-          <div className="workflow-feature">
-            <div className="feature-stat">99.9%</div>
-            <div className="feature-label">Uptime Guarantee</div>
-          </div>
-          <div className="workflow-feature">
-            <div className="feature-stat">&lt; 10ms</div>
-            <div className="feature-label">Response Time</div>
-          </div>
-          <div className="workflow-feature">
-            <div className="feature-stat">24/7</div>
-            <div className="feature-label">AI Monitoring</div>
-          </div>
-          <div className="workflow-feature">
-            <div className="feature-stat">256-bit</div>
-            <div className="feature-label">Encryption</div>
-          </div>
+        <div className="workflow-diagram">
+          <img 
+            src="/flow.png" 
+            alt="TrustOS Fraud Detection Flow - How it works: User initiates transaction → Bank processes request → TrustOS intercepts contextual signals, enriches data with external sources, generates trust score, and flags suspicious activity → Bank responds based on TrustOS insights → User is protected"
+            className="flow-diagram"
+          />
         </div>
       </section>
 
